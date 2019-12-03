@@ -1,8 +1,10 @@
 package yapily.marvel.backend;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,11 @@ public class CharactersServiceMockedImpl implements CharactersService {
                                                "Description " + i,
                                                "https://loremflickr.com/320/240/super,hero?lock=" + i));
         }
+    }
+    
+    @Override
+    public List<MarvelCharacter> getAllCharacters() {
+            return repository;
     }
 
     @Override
@@ -46,6 +53,11 @@ public class CharactersServiceMockedImpl implements CharactersService {
                          .filter(c -> c.getId().equals(id))
                          .findAny();
     }
+    
+    @Override
+	public Collection<MarvelCharacter> getCharactersByName(String name) {
+		return repository.stream().filter(c -> c.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+	}
 
 
 }
