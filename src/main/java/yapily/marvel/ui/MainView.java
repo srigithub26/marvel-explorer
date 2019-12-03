@@ -14,7 +14,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.server.Resource;
 
 import yapily.marvel.backend.CharactersService;
 import yapily.marvel.model.MarvelCharacter;
@@ -41,24 +40,9 @@ public class MainView extends VerticalLayout {
         });
         add(filterText);
         
-        Grid.Column<Resource> thumbnailColumn = grid.addColumn(User::getThumbnail)
-                .setCaption("Thumbnail")
-                .setRenderer(new ImageRenderer<>(this::showImage))
-                .setStyleGenerator(r -> "thumbnail")
-                .setWidth(131);
-        
         add(grid);
         charactersLayout = new VerticalLayout();
         grid.setColumns("name","description","imageUrl");
-        
-        grid.addComponentColumn(probe -> {
-            Image image = new Image("", new ThemeResource("img/" + probe.getStructureData().getImageFileName()));
-            image.setWidth(800, Sizeable.Unit.PIXELS);
-            image.setHeight(800, Sizeable.Unit.PIXELS);
-
-            return image;
-        }).setCaption("Structure");
-        
         loadMoreButton = new Button("Load more", l -> loadMore());
         grid.setItems(charactersService.getCharacters(position, PAGE_SIZE));
         add(charactersLayout, loadMoreButton);
